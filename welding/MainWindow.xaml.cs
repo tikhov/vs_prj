@@ -87,7 +87,7 @@ namespace welding
             {
                 try
                 {
-                    s_port.PortName = "COM2";
+                    s_port.PortName = Properties.Settings.Default.COM_port;
                     s_port.BaudRate = 921600;
                     s_port.DtrEnable = true;
                     s_port.Open();
@@ -98,11 +98,15 @@ namespace welding
                 }
                 open_port.IsEnabled = true;
                 close_com_port.IsEnabled = false;
+                com_ports_names.IsEnabled = false;
+
+
             }
             else
             {
                 open_port.IsEnabled = false;
                 close_com_port.IsEnabled = true;
+                
             }
         }
         void Error_con()
@@ -360,7 +364,11 @@ namespace welding
                         progres_bar.Value = 100;
                         open_port.IsEnabled = false;
                         close_com_port.IsEnabled = true;
-                        
+                        Properties.Settings.Default.COM_port = com_ports_names.Text;
+                        Properties.Settings.Default.Save();
+                       
+
+
 
                     }
                     else
