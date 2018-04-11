@@ -162,3 +162,24 @@ C:\Users\upro\Desktop\welding\obj\Debug\welding.csproj.GenerateResource.Cache
 C:\Users\upro\Desktop\welding\obj\Debug\welding.csproj.CoreCompileInputs.cache
 C:\Users\upro\Desktop\welding\obj\Debug\welding.exe
 C:\Users\upro\Desktop\welding\obj\Debug\welding.pdb
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\bin\Debug\welding.exe.config
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\bin\Debug\welding.exe
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\bin\Debug\welding.pdb
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.csprojResolveAssemblyReference.cache
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\ExitWindow.g.cs
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\InfoWindow.g.cs
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\LogiWindow.g.cs
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\MainWindow.g.cs
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\App.g.cs
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding_MarkupCompile.cache
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding_MarkupCompile.lref
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\ExitWindow.baml
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\InfoWindow.baml
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\LogiWindow.baml
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\MainWindow.baml
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.g.resources
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.Properties.Resources.resources
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.csproj.GenerateResource.cache
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.csproj.CoreCompileInputs.cache
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.exe
+D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.pdb
