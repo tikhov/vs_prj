@@ -24,9 +24,12 @@ namespace welding
     /// </summary>
     public partial class MainWindow : Window
     {
-        int start = 0;           // определяет включина или выключена программа (0 - стоп, 1- сторт, 2 реверс)
-        int mode = 0;            // режим работы (0000- проверка связи, 0001 - режим "Ручной", 0010 - режим "По току сварки", 0011 - режим "По току проволоки", 0100 - режим "Циклограмма") 
-        int auto_revers = 0;     // вкл., выкл. автоматический реверс 
+        SerialPort s_port = new SerialPort();
+        DispatcherTimer timer_connect = new DispatcherTimer();
+
+        int start;           // определяет включина или выключена программа (0 - стоп, 1- сторт, 2 реверс)
+        int mode;            // режим работы (0000- проверка связи, 0001 - режим "Ручной", 0010 - режим "По току сварки", 0011 - режим "По току проволоки", 0100 - режим "Циклограмма") 
+        int auto_revers;     // вкл., выкл. автоматический реверс 
         int id_mess = 1;         // идентификатор сообщения
         int contr_sum;           // контрольная сумма
 
@@ -35,35 +38,25 @@ namespace welding
         string txt = "";
         string txt1 = "";
         int qqq;
-       
         int error_connect_q = 0;
 
+        
 
-        int current_start = 0;    // ток начала подачи
-        int current_stop = 0;     // ток конца подачи
-        int revers = 0;           // реверс
-        int start_on_current = 0; // старт по току пучка
+        int current_start;    // ток начала подачи
+        int current_stop;     // ток конца подачи
+        
+        int revers_distance;  // растояние реверса
+        int start_on_current; // старт по току пучка
 
         // ручной режим
-        int feed_speed = 0;       // скорость подачи
-        int feed_distance = 0;    // расстояние подачи
-        int short_press = 0;      // краткое нажатие
-        int long_press = 0;       // длительное нажатие 
+        int feed_speed;       // скорость подачи
+        int feed_distance;    // расстояние подачи
+       
 
-        SerialPort s_port = new SerialPort();
+        
 
-        /*
-        bool correct(string s)
-        {
-            
-            if (s != "0" || "1")
-            {
-                return false;
-            }
-            else { return true; }
-        }
+        
 
-    */
         void GetAvaileblePorts()
         {
             string ports_name;
@@ -83,30 +76,50 @@ namespace welding
         
         void ConnectComPorts()
         {
-            if (s_port.IsOpen == false)
+           if (s_port.IsOpen == false)
+                {
+                    try
+                    {
+                        s_port.PortName = Properties.Settings.Default.COM_port;
+                        s_port.BaudRate = 921600;
+                        s_port.DtrEnable = true;
+                        s_port.Open();
+                    }
+                    catch (Exception)
+                    {
+                        error_connect_q++;
+                        if (error_connect_q >= 5)
+                        {
+
+                            timer_connect.Stop();
+                        }
+                    }
+                    open_port.IsEnabled = true;
+                    close_com_port.IsEnabled = false;
+                }
+           else
+                {
+                    open_port.IsEnabled = false;
+                    close_com_port.IsEnabled = true;
+
+                }
+            
+        }
+        void Ok_connect()
+        {
+            if (s_port.IsOpen == true)
             {
-                try
-                {
-                    s_port.PortName = Properties.Settings.Default.COM_port;
-                    s_port.BaudRate = 921600;
-                    s_port.DtrEnable = true;
-                    s_port.Open();
-                }
-                catch (Exception)
-                {
-                    error_connect_q++;
-                }
+                com_ports_names.IsEnabled = false;
+                progres_bar.Value = 100;
+                com_ports_names.Text = Properties.Settings.Default.COM_port;
+            }
+            else if (s_port.IsOpen == false)
+            {
+                progres_bar.Value = 0;
+                com_ports_names.IsEnabled = true;
                 open_port.IsEnabled = true;
                 close_com_port.IsEnabled = false;
-                com_ports_names.IsEnabled = false;
 
-
-            }
-            else
-            {
-                open_port.IsEnabled = false;
-                close_com_port.IsEnabled = true;
-                
             }
         }
         void Error_con()
@@ -117,36 +130,111 @@ namespace welding
                 error_text.Visibility = Visibility.Visible;
                 error_text.Content = "Ошибка подключения к COM-порту. Выберите порт вручную";
                 com_port_options.Visibility = Visibility.Visible;
+                
 
             }
+        }
+        void Send_function()
+        {
+            s_port.DiscardInBuffer();
+            s_port.DiscardOutBuffer();
+            Array.Clear(send_mess, 0, 9);
+            Array.Clear(enter_mess, 0, 9);
+            txt = "";
+            txt1 = "";
+
+            int feed_speed_l = feed_speed;
+            int feed_speed_h = feed_speed >> 8;
+            int feed_distance_l = feed_distance;
+            int feed_distance_h = feed_distance >> 8;
+
+
+
+            send_mess[0] = (byte)id_mess;                   // id сообщения
+            send_mess[1] = (byte)mode;                      // режим работы
+            send_mess[2] = (byte)start;                     // команда включина или выключена программа (0 - стоп, 1- сторт, 2 реверс)
+            send_mess[3] = (byte)auto_revers;               // автоматический реверс
+            send_mess[4] = (byte)feed_speed_h;              // скорость подачи (старший байт)
+            send_mess[5] = (byte)feed_speed_l;              // скорость подачи (младший байт)
+            send_mess[6] = (byte)feed_distance_h;           // расстояние подачи (старший байт)
+            send_mess[7] = (byte)feed_distance_l;           // расстояние подачи (младший байт)
+            contr_sum = 0;
+            for (var i = 0; i <= send_mess.Length - 1; i++)
+            {
+                contr_sum = contr_sum ^ send_mess[i];
+            }
+
+            send_mess[8] = (byte)contr_sum;                 // контрольная сумма    
+            try { s_port.Write(send_mess, 0, 9); }
+            catch (Exception)
+            {
+                error_text.Visibility = Visibility.Visible;
+                error_text.Content = "выберете COM-port";
+            }
+
+
+            try
+            {
+                System.Threading.Thread.Sleep(3);
+                s_port.Read(enter_mess, 0, 3);
+
+            }
+            catch (InvalidOperationException)
+            {
+                error_text.Visibility = Visibility.Visible;
+                error_text.Content = "порт отключен";
+            }
+
+            for (var k = 0; k <= send_mess.Length - 1; k++)
+            {
+                qqq = Convert.ToInt32(send_mess[k]);
+                txt1 += qqq.ToString() + " ";
+            }
+            send_text.Text = txt1;
+
+            for (var j = 0; j <= enter_mess.Length - 1; j++)
+            {
+
+                qqq = Convert.ToInt32(enter_mess[j]);
+                txt += qqq.ToString() + " ";
+            }
+
+            read_text.Text = txt;
+
         }
 
         public MainWindow()
         {
             
             InitializeComponent();
-            screen_1.Text = current_start.ToString();
+            
+            screen_1.Text = Properties.Settings.Default.current_start.ToString();
             screen_2.Text = current_stop.ToString();
             screen_hand_mode_1.Text = feed_speed.ToString();
             screen_hand_mode_podachi.Text = feed_distance.ToString();
             GetAvaileblePorts();
-            
-        }
-
-        private void Windows_loaded(object sender, RoutedEventArgs e)
-        {
-            DispatcherTimer timer_connect = new DispatcherTimer();
             timer_connect.Interval = TimeSpan.FromSeconds(1);
             timer_connect.Tick += T_Tick;
             timer_connect.Start();
+
+        }
+        private void Main_window_load(object sender, RoutedEventArgs e)
+        {
+            start = 0;
+
+            // пуск по току сварки
+            start_on_current = Properties.Settings.Default.start_on_current;
+            if (start_on_current > 1) { start_on_current = 0; }
+            if (start_on_current == 1) { on_start_2.Visibility = Visibility.Visible; screen_1.IsEnabled = true; screen_2.IsEnabled = true; }
+            else if (start_on_current == 0) { on_start_2.Visibility = Visibility.Hidden; screen_1.IsEnabled = false; screen_2.IsEnabled = false; }
+
+            // ток начала сварки
+            current_start = Properties.Settings.Default.current_start;
         }
 
         private void T_Tick(object sender, EventArgs e)
-        {
-           
+        {        
             Error_con();
-           
-
         }
         
         private void butteb_up_1_Click(object sender, RoutedEventArgs e)
@@ -183,12 +271,18 @@ namespace welding
        
 
         private void screen_1_TextChanged(object sender, TextChangedEventArgs e)
-        { 
+        {
+           
+           // current_start = Properties.Settings.Default.current_start;
             string s1 = screen_1.Text;
             screen_1.MaxLength = 3;
-             if (s1.Count() < 1) { s1 = "0"; }
+             if (s1.Count() < 1 || start_on_current == 0) { s1 = "0"; }
              current_start = Int32.Parse(s1);
-         
+            Properties.Settings.Default.current_start = current_start;
+
+
+
+
         }
         
 
@@ -209,7 +303,8 @@ namespace welding
                 
              ExitWindow exitWindow = new ExitWindow();
              exitWindow.Show();
-            
+             Properties.Settings.Default.Save();
+
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
@@ -245,15 +340,19 @@ namespace welding
         private void start_button_1_Click(object sender, RoutedEventArgs e)
         {
             start_on_current++;
-            if (start_on_current == 2) { start_on_current = 0; }
+            if (start_on_current > 1) { start_on_current = 0; }
             if (start_on_current == 1) { on_start_2.Visibility = Visibility.Visible; screen_1.IsEnabled = true; screen_2.IsEnabled = true;}
-            else if (start_on_current == 0) { on_start_2.Visibility = Visibility.Hidden; screen_1.IsEnabled = false; screen_2.IsEnabled = false;}
+            else if (start_on_current == 0) { on_start_2.Visibility = Visibility.Hidden; screen_1.IsEnabled = false; screen_2.IsEnabled = false; current_start = 0; }
+            Properties.Settings.Default.start_on_current = start_on_current;
+
+            
 
         }
 
         private void start_button_Click(object sender, RoutedEventArgs e)
         {
             start = 1;
+            revers_butt.IsEnabled = false;
             off_img.Visibility = Visibility.Hidden;
             on_img.Visibility = Visibility.Visible;
             
@@ -261,6 +360,7 @@ namespace welding
         private void stop_button_Click(object sender, RoutedEventArgs e)
         {
             start = 0;
+            revers_butt.IsEnabled = true;
             on_img.Visibility = Visibility.Hidden;
             off_img.Visibility = Visibility.Visible;
            
@@ -329,6 +429,8 @@ namespace welding
 
         private void MenuItem_Click_5(object sender, RoutedEventArgs e)
         {
+            
+            Ok_connect();
             com_port_options.Visibility = Visibility.Visible;
 
         }
@@ -390,6 +492,7 @@ namespace welding
         private void close_com_port_Click(object sender, RoutedEventArgs e)
         { 
             s_port.Close();
+            timer_connect.Stop();
             progres_bar.Value = 0;
             com_ports_names.IsEnabled = true;
             open_port.IsEnabled = true;
@@ -400,75 +503,16 @@ namespace welding
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            Send_function();
 
-            Array.Clear(send_mess, 0, 9);
-            Array.Clear(enter_mess, 0, 9);
-            txt = "";
-            txt1 = "";
 
-            int feed_speed_l = feed_speed;
-            int feed_speed_h = feed_speed >> 8;
-            int feed_distance_l = feed_distance;
-            int feed_distance_h = feed_distance >> 8;
-            
-
-            
-            send_mess[0] = (byte)id_mess;                   // id сообщения
-            send_mess[1] = (byte)mode;                      // режим работы
-            send_mess[2] = (byte)start;                     // команда
-            send_mess[3] = (byte)auto_revers;               // автоматический реверс
-            send_mess[4] = (byte)feed_speed_h;              // скорость подачи (старший байт)
-            send_mess[5] = (byte)feed_speed_l;              // скорость подачи (младший байт)
-            send_mess[6] = (byte)feed_distance_h;           // расстояние подачи (старший байт)
-            send_mess[7] = (byte)feed_distance_l;           // расстояние подачи (младший байт)
-            contr_sum = 0;
-            for (var i = 0; i <= send_mess.Length -1 ; i++)
-            {
-                contr_sum = contr_sum ^ send_mess[i];
-            }
-
-            send_mess[8] = (byte)contr_sum;                 // контрольная сумма    
-            try { s_port.Write(send_mess, 0, 9); }
-            catch (Exception) {
-                error_text.Visibility = Visibility.Visible;
-                error_text.Content = "выберете COM-port";
-            }
-           
-
-            try
-            {
-                System.Threading.Thread.Sleep(3);
-                s_port.Read(enter_mess, 0, 3);
-                
-            }
-            catch (Exception)
-            {
-                error_text.Visibility = Visibility.Visible;
-                error_text.Content = "слишком долго";
-            }
-            
-            for (var k = 0; k <= send_mess.Length - 1; k++)
-            {
-                qqq = Convert.ToInt32(send_mess[k]);
-                txt1 += qqq.ToString() + " ";
-            }
-            send_text.Text = txt1;
-            
-            for (var j = 0; j <= enter_mess.Length - 1; j++)
-            {
-
-                qqq = Convert.ToInt32(enter_mess[j]);
-                txt += qqq.ToString() + " ";
-            }
-
-            read_text.Text = txt;
-            
         }
          
 
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+
             Array.Clear(send_mess, 0, 9);
             Array.Clear(enter_mess, 0, 9);
             
@@ -488,7 +532,7 @@ namespace welding
             catch(InvalidOperationException)
             {
                 error_text.Visibility = Visibility.Visible;
-                error_text.Content = "слишком долго";
+                error_text.Content = "порт отключен";
             }
 
         }
@@ -510,5 +554,13 @@ namespace welding
         {
             GetAvaileblePorts();
         }
+
+        private void revers_butt_Click(object sender, RoutedEventArgs e)
+        {
+            start = 2;
+            
+        }
+
+        
     }
 }

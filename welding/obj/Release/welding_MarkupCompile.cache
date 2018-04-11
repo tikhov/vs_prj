@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Aleksandr\source\repos\welding\welding\obj\Release\
+D:\work_folder\tikhov\vs_prj\welding\obj\Release\
 welding
 none
 false
 TRACE
-C:\Users\Aleksandr\source\repos\welding\welding\App.xaml
-3-1510171342
+D:\work_folder\tikhov\vs_prj\welding\App.xaml
+4-1286227058
 
-71566200808
+8203776325
 18-1863929278
-ExitWindow.xaml;InfoWindow.xaml;MainWindow.xaml;
+ExitWindow.xaml;InfoWindow.xaml;LogiWindow.xaml;MainWindow.xaml;
 
-False
+True
 

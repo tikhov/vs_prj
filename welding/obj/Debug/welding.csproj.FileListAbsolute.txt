@@ -183,3 +183,24 @@ D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.csproj.GenerateRes
 D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.csproj.CoreCompileInputs.cache
 D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.exe
 D:\Visual Studio 2017\vs_prj\vs_prj\welding\obj\Debug\welding.pdb
+D:\work_folder\tikhov\vs_prj\welding\bin\Debug\welding.exe.config
+D:\work_folder\tikhov\vs_prj\welding\bin\Debug\welding.exe
+D:\work_folder\tikhov\vs_prj\welding\bin\Debug\welding.pdb
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\welding.csprojResolveAssemblyReference.cache
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\ExitWindow.g.cs
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\InfoWindow.g.cs
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\LogiWindow.g.cs
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\MainWindow.g.cs
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\App.g.cs
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\welding_MarkupCompile.cache
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\welding_MarkupCompile.lref
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\ExitWindow.baml
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\InfoWindow.baml
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\LogiWindow.baml
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\MainWindow.baml
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\welding.g.resources
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\welding.Properties.Resources.resources
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\welding.csproj.GenerateResource.cache
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\welding.csproj.CoreCompileInputs.cache
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\welding.exe
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\welding.pdb

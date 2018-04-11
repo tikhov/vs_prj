@@ -25,13 +25,73 @@ namespace welding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\"COM2\"")]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM2")]
         public string COM_port {
             get {
                 return ((string)(this["COM_port"]));
             }
             set {
                 this["COM_port"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int current_start {
+            get {
+                return ((int)(this["current_start"]));
+            }
+            set {
+                this["current_start"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int current_stop {
+            get {
+                return ((int)(this["current_stop"]));
+            }
+            set {
+                this["current_stop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int revers_distance {
+            get {
+                return ((int)(this["revers_distance"]));
+            }
+            set {
+                this["revers_distance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int auto_revers {
+            get {
+                return ((int)(this["auto_revers"]));
+            }
+            set {
+                this["auto_revers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int start_on_current {
+            get {
+                return ((int)(this["start_on_current"]));
+            }
+            set {
+                this["start_on_current"] = value;
             }
         }
     }

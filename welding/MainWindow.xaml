@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:welding"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1366" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="{x:Null}" Icon="img/favicon.png" Loaded="Windows_loaded">
+        Title="MainWindow" Height="768" Width="1366" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="{x:Null}" Icon="img/favicon.png" Loaded="Main_window_load" >
 
     <Grid Margin="-9,-7,-10,-6">
         <Grid.RowDefinitions>
@@ -1302,7 +1302,7 @@
             </Button.Background>
         </Button>
         <Image x:Name="on_autu_rev" Visibility="Hidden" HorizontalAlignment="Left" Height="20" Margin="291,289,0,0" VerticalAlignment="Top" Width="20" Source="img/on_cik.png" Grid.RowSpan="2"/>
-        <Button x:Name="revers_butt" Content="" HorizontalAlignment="Left" Margin="364,289,0,0" VerticalAlignment="Top" Width="100" BorderBrush="{x:Null}" Height="44" Cursor="Hand" Style="{DynamicResource ButtonStyle3}" Grid.RowSpan="2">
+        <Button x:Name="revers_butt" Content="" HorizontalAlignment="Left" Margin="364,289,0,0" VerticalAlignment="Top" Width="100" BorderBrush="{x:Null}" Height="44" Cursor="Hand" Style="{DynamicResource ButtonStyle3}" Grid.RowSpan="2" Click="revers_butt_Click">
             <Button.Resources>
                 <Style x:Key="FocusVisual">
                     <Setter Property="Control.Template">
@@ -1318,7 +1318,7 @@
 
 
                 <SolidColorBrush x:Key="Button.Pressed.Border" Color="#CCC9C6"/>
-                <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+                
                 <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
                 <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
                 <Style x:Key="ButtonStyle3" TargetType="{x:Type Button}">
@@ -1346,7 +1346,7 @@
                                         <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
                                     </Trigger>
                                     <Trigger Property="IsEnabled" Value="false">
-                                        <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                        
                                         <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
                                         <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
                                     </Trigger>

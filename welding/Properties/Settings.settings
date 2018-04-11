@@ -3,7 +3,22 @@
   <Profiles />
   <Settings>
     <Setting Name="COM_port" Type="System.String" Scope="User">
-      <Value Profile="(Default)">"COM2"</Value>
+      <Value Profile="(Default)">COM2</Value>
+    </Setting>
+    <Setting Name="current_start" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="current_stop" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="revers_distance" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="auto_revers" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="start_on_current" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>
