@@ -1,0 +1,21 @@
+﻿<Window x:Class="welding.LogiWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:welding"
+        mc:Ignorable="d"
+        Title="Протокол обмена" Height="450" Width="800">
+    <Grid>
+
+        <DataGrid HorizontalAlignment="Left" Height="277" Margin="130,28,0,0" VerticalAlignment="Top" Width="229" SelectionChanged="DataGrid_SelectionChanged"/>
+        <Label Content="#" HorizontalAlignment="Left" Margin="136,40,0,0" VerticalAlignment="Top"/>
+        <Label Content="Вх\Вых" HorizontalAlignment="Left" Margin="170,40,0,0" VerticalAlignment="Top"/>
+        <Label Content="Время" HorizontalAlignment="Left" Margin="224,40,0,0" VerticalAlignment="Top"/>
+        <Label Content="Данные" HorizontalAlignment="Left" Margin="283,40,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="add_port" Content="Подключить" HorizontalAlignment="Left" Margin="423,33,0,0" VerticalAlignment="Top" Width="75" Click="add_port_Click"/>
+        <Button x:Name="send" Content="Отправить" HorizontalAlignment="Left" Margin="423,58,0,0" VerticalAlignment="Top" Width="75" Click="send_Click"/>
+        <Button x:Name="accept" Content="принять" HorizontalAlignment="Left" Margin="423,83,0,0" VerticalAlignment="Top" Width="75" Click="accept_Click"/>
+
+    </Grid>
+</Window>
