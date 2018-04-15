@@ -94,5 +94,41 @@ namespace welding.Properties {
                 this["start_on_current"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int mode {
+            get {
+                return ((int)(this["mode"]));
+            }
+            set {
+                this["mode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float feed_speed_d {
+            get {
+                return ((float)(this["feed_speed_d"]));
+            }
+            set {
+                this["feed_speed_d"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int feed_distance {
+            get {
+                return ((int)(this["feed_distance"]));
+            }
+            set {
+                this["feed_distance"] = value;
+            }
+        }
     }
 }
