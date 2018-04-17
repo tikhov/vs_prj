@@ -36,8 +36,8 @@ namespace welding
         int id_mess = 1;         // идентификатор сообщения
         int contr_sum;           // контрольная сумма
 
-        byte[] enter_mess = new byte[9];
-        byte[] send_mess = new byte[9];
+        byte[] enter_mess = new byte[10];
+        byte[] send_mess = new byte[10];
         string txt = "";
         string txt1 = "";
         int qqq;
@@ -153,8 +153,8 @@ namespace welding
         {
             s_port.DiscardInBuffer();
             s_port.DiscardOutBuffer();
-            Array.Clear(send_mess, 0, 9);
-            Array.Clear(enter_mess, 0, 9);
+            Array.Clear(send_mess, 0, 10);
+            Array.Clear(enter_mess, 0, 10);
             send_mess[0] = 1;
             send_mess[1] = 0;
             send_mess[2] = 0;
@@ -163,14 +163,15 @@ namespace welding
             send_mess[5] = 0;
             send_mess[6] = 0;
             send_mess[7] = 0;
+            send_mess[8] = 0;
             contr_sum = 0;
             for (var i = 0; i <= send_mess.Length - 1; i++)
             {
                 contr_sum = contr_sum ^ send_mess[i];
             }
 
-            send_mess[8] = (byte)contr_sum;                 // контрольная сумма   
-            s_port.Write(send_mess, 0, 9);
+            send_mess[9] = (byte)contr_sum;                 // контрольная сумма   
+            s_port.Write(send_mess, 0, 10);
             /*
             try
             {
@@ -204,75 +205,79 @@ namespace welding
         }
         void Send_function()
         {
-            s_port.DiscardInBuffer();
-            s_port.DiscardOutBuffer();
-            Array.Clear(send_mess, 0, 9);
-            Array.Clear(enter_mess, 0, 9);
-            txt = "";
-            txt1 = "";
-            float feed_speed_d_1 = 0;
-            feed_speed_d_1 = feed_speed_d * 10;
-            feed_speed = (int)feed_speed_d_1;
-            int feed_speed_l = feed_speed;
-            int feed_speed_h = feed_speed >> 8;
-            int feed_distance_l = feed_distance;
-            int feed_distance_h = feed_distance >> 8;
-            
-
-
-
-
-            send_mess[0] = (byte)id_mess;                   // id сообщения
-            send_mess[1] = (byte)mode;                      // режим работы (0000- проверка связи, 0001 - режим "Ручной", 0010 - режим "По току сварки", 0011 - режим "По току проволоки", 0100 - режим "Циклограмма") 
-            send_mess[2] = (byte)start;                     // команда включина или выключена программа (0 - стоп, 1- сторт, 2 реверс)
-            send_mess[3] = (byte)auto_revers;               // автоматический реверс
-            send_mess[4] = (byte)feed_speed_h;              // скорость подачи (старший байт)
-            send_mess[5] = (byte)feed_speed_l;              // скорость подачи (младший байт)
-            send_mess[6] = (byte)feed_distance_h;           // расстояние подачи (старший байт)
-            send_mess[7] = (byte)feed_distance_l;           // расстояние подачи (младший байт)
-            contr_sum = 0;
-            for (var i = 0; i <= send_mess.Length - 1; i++)
+            if (s_port.IsOpen == true)
             {
-                contr_sum = contr_sum ^ send_mess[i];
+                s_port.DiscardInBuffer();
+                s_port.DiscardOutBuffer();
+                Array.Clear(send_mess, 0, 10);
+                Array.Clear(enter_mess, 0, 10);
+                txt = "";
+                txt1 = "";
+                float feed_speed_d_1 = 0;
+                feed_speed_d_1 = feed_speed_d * 10;
+                feed_speed = (int)feed_speed_d_1;
+                int feed_speed_l = feed_speed;
+                int feed_speed_h = feed_speed >> 8;
+                int feed_distance_l = feed_distance;
+                int feed_distance_h = feed_distance >> 8;
+
+
+
+
+
+                send_mess[0] = (byte)id_mess;                   // id сообщения
+                send_mess[1] = (byte)mode;                      // режим работы (0000- проверка связи, 0001 - режим "Ручной", 0010 - режим "По току сварки", 0011 - режим "По току проволоки", 0100 - режим "Циклограмма") 
+                send_mess[2] = (byte)start;                     // команда включина или выключена программа (0 - стоп, 1- сторт, 2 реверс)
+                send_mess[3] = (byte)auto_revers;               // автоматический реверс
+                send_mess[4] = (byte)feed_speed_h;              // скорость подачи (старший байт)
+                send_mess[5] = (byte)feed_speed_l;              // скорость подачи (младший байт)
+                send_mess[6] = (byte)feed_distance_h;           // расстояние подачи (старший байт)
+                send_mess[7] = (byte)feed_distance_l;           // расстояние подачи (младший байт)
+                send_mess[8] = (byte)revers_distance;            // расстояние реверса 
+                contr_sum = 0;
+                for (var i = 0; i <= send_mess.Length - 1; i++)
+                {
+                    contr_sum = contr_sum ^ send_mess[i];
+                }
+
+                send_mess[9] = (byte)contr_sum;                 // контрольная сумма    
+                try { s_port.Write(send_mess, 0, 10); }
+
+                catch (Exception)
+                {
+                    error_text.Visibility = Visibility.Visible;
+                    error_text.Content = "выберете COM-port";
+                }
+
+
+                try
+                {
+                    System.Threading.Thread.Sleep(3);
+                    s_port.Read(enter_mess, 0, 3);
+
+                }
+                catch (InvalidOperationException)
+                {
+                    error_text.Visibility = Visibility.Visible;
+                    error_text.Content = "порт отключен";
+                }
+
+                for (var k = 0; k <= send_mess.Length - 1; k++)
+                {
+                    qqq = Convert.ToInt32(send_mess[k]);
+                    txt1 += qqq.ToString() + " ";
+                }
+                send_text.Text = txt1;
+
+                for (var j = 0; j <= enter_mess.Length - 1; j++)
+                {
+
+                    qqq = Convert.ToInt32(enter_mess[j]);
+                    txt += qqq.ToString() + " ";
+                }
+
+                read_text.Text = txt;
             }
-
-            send_mess[8] = (byte)contr_sum;                 // контрольная сумма    
-            try { s_port.Write(send_mess, 0, 9); }
-             
-            catch (Exception)
-            {
-                error_text.Visibility = Visibility.Visible;
-                error_text.Content = "выберете COM-port";
-            }
-
-
-            try
-            {
-                System.Threading.Thread.Sleep(3);
-                s_port.Read(enter_mess, 0, 3);
-
-            }
-            catch (InvalidOperationException)
-            {
-                error_text.Visibility = Visibility.Visible;
-                error_text.Content = "порт отключен";
-            }
-
-            for (var k = 0; k <= send_mess.Length - 1; k++)
-            {
-                qqq = Convert.ToInt32(send_mess[k]);
-                txt1 += qqq.ToString() + " ";
-            }
-            send_text.Text = txt1;
-
-            for (var j = 0; j <= enter_mess.Length - 1; j++)
-            {
-
-                qqq = Convert.ToInt32(enter_mess[j]);
-                txt += qqq.ToString() + " ";
-            }
-
-            read_text.Text = txt;
 
         }
 
@@ -285,6 +290,7 @@ namespace welding
             screen_2.Text = Properties.Settings.Default.current_stop.ToString();
             screen_hand_mode_1.Text = feed_speed_d.ToString("F1");
             screen_hand_mode_podachi.Text = feed_distance.ToString();
+            screen_rev.Text = revers_distance.ToString();
             GetAvaileblePorts();
             timer_connect.Interval = TimeSpan.FromSeconds(1);
             timer_connect.Tick += T_Tick;
@@ -688,7 +694,7 @@ namespace welding
         private void revers_butt_Click(object sender, RoutedEventArgs e)
         {
             start = 2;
-            
+            Send_function();            
         }
 
         private void screen_hand_mode_1_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -719,6 +725,42 @@ namespace welding
         private void screen_hand_mode_podachi_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!Char.IsDigit(e.Text, 0)) e.Handled = true;
+        }
+
+        private void screen_rev_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string s6 = screen_rev.Text;
+            screen_rev.MaxLength = 2;
+            if (s6.Count() < 1) { s6 = "0"; }
+            if (feed_distance > 99) { feed_distance = 98; }
+
+            revers_distance = Int32.Parse(s6);
+
+            if (feed_distance > 0) { on_podachi.Visibility = Visibility.Visible; screen_hand_mode_podachi.IsEnabled = true; }
+            Properties.Settings.Default.feed_distance = feed_distance;
+            if (start == 1 && feed_distance != 0) { Send_function(); }
+        }
+
+        private void butteb_up_rev_Click(object sender, RoutedEventArgs e)
+        {
+            
+            if (revers_distance > 99) { revers_distance = 98; }
+            revers_distance++;
+            screen_rev.Text = revers_distance.ToString();
+                
+            
+            Send_function();
+        }
+
+        private void button_down_rev_Click(object sender, RoutedEventArgs e)
+        {
+            
+            if (revers_distance<=0) { revers_distance = 1; }
+            revers_distance--;
+            screen_rev.Text = revers_distance.ToString();
+
+
+            Send_function();
         }
     }
 }
