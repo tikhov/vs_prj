@@ -1363,7 +1363,7 @@
                 <ImageBrush ImageSource="img/buttons/button_rev.png"/>
             </Button.Background>
         </Button>
-        <TextBox x:Name="screen_volt"  HorizontalAlignment="Left" Height="39" Margin="470,231,0,0" Padding="1,-2" TextAlignment="Right" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" BorderBrush="{x:Null}" FontSize="43" FontFamily="DS-Digital" Foreground="#FF343434" SelectionBrush="#FF8095F1" BorderThickness="0" PreviewTextInput="screen_volt_PreviewTextInput">
+        <TextBox x:Name="screen_volt"  HorizontalAlignment="Left" Height="39" Margin="470,234,0,0" Padding="1,-2" TextAlignment="Right" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" BorderBrush="{x:Null}" FontSize="43" FontFamily="DS-Digital" Foreground="#FF343434" SelectionBrush="#FF8095F1" BorderThickness="0" PreviewTextInput="screen_volt_PreviewTextInput" TextChanged="screen_volt_TextChanged">
             <TextBox.Effect>
                 <DropShadowEffect Opacity="0.2" Direction="320"/>
             </TextBox.Effect>
@@ -1371,7 +1371,7 @@
                 <ImageBrush ImageSource="img/screen_w.png" Stretch="UniformToFill"/>
             </TextBox.Background>
         </TextBox>
-        <Button x:Name="button_down_2_Copy" Content="" HorizontalAlignment="Left" Margin="442,251,0,0" VerticalAlignment="Top" Width="21" Height="22" BorderBrush="{x:Null}" Cursor="Hand" Style="{DynamicResource button_down_1}">
+        <Button x:Name="button_down_2_Copy" Content="" HorizontalAlignment="Left" Margin="442,251,0,0" VerticalAlignment="Top" Width="21" Height="22" BorderBrush="{x:Null}" Cursor="Hand" Style="{DynamicResource button_down_1}" Click="button_down_2_Copy_Click">
             <Button.Resources>
                 <Style x:Key="FocusVisual">
                     <Setter Property="Control.Template">
@@ -1431,7 +1431,7 @@
                 <ImageBrush ImageSource="img/buttons/button_down.png"/>
             </Button.Background>
         </Button>
-        <Button x:Name="butteb_up_2_Copy" Content="" HorizontalAlignment="Left" Margin="442,227,0,0" VerticalAlignment="Top" Width="21" Height="22" BorderBrush="{x:Null}" Cursor="Hand" Style="{DynamicResource ButtonStyle_up_down}">
+        <Button x:Name="butteb_up_2_Copy" Content="" HorizontalAlignment="Left" Margin="442,227,0,0" VerticalAlignment="Top" Width="21" Height="22" BorderBrush="{x:Null}" Cursor="Hand" Style="{DynamicResource ButtonStyle_up_down}" Click="butteb_up_2_Copy_Click">
             <Button.Resources>
                 <Style x:Key="FocusVisual">
                     <Setter Property="Control.Template">

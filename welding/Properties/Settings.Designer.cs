@@ -130,5 +130,17 @@ namespace welding.Properties {
                 this["feed_distance"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int bias_voltage {
+            get {
+                return ((int)(this["bias_voltage"]));
+            }
+            set {
+                this["bias_voltage"] = value;
+            }
+        }
     }
 }

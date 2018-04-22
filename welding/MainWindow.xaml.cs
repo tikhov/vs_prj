@@ -36,8 +36,8 @@ namespace welding
         int id_mess = 1;         // идентификатор сообщения
         int contr_sum;           // контрольная сумма
 
-        byte[] enter_mess = new byte[10];
-        byte[] send_mess = new byte[10];
+        byte[] enter_mess = new byte[15];
+        byte[] send_mess = new byte[15];
         string txt = "";
         string txt1 = "";
         int qqq;
@@ -51,6 +51,8 @@ namespace welding
         
         int revers_distance;  // растояние реверса
         int start_on_current; // старт по току пучка
+
+        int bias_voltage;     // напряжение сещения
 
         // ручной режим
         int feed_speed;       // скорость подачи
@@ -78,7 +80,7 @@ namespace welding
             }
 
         }
-        
+                
         void ConnectComPorts()
         {
            if (s_port.IsOpen == false)
@@ -153,8 +155,8 @@ namespace welding
         {
             s_port.DiscardInBuffer();
             s_port.DiscardOutBuffer();
-            Array.Clear(send_mess, 0, 10);
-            Array.Clear(enter_mess, 0, 10);
+            Array.Clear(send_mess, 0, 15);
+            Array.Clear(enter_mess, 0, 15);
             send_mess[0] = 1;
             send_mess[1] = 0;
             send_mess[2] = 0;
@@ -164,14 +166,19 @@ namespace welding
             send_mess[6] = 0;
             send_mess[7] = 0;
             send_mess[8] = 0;
+            send_mess[9] = 0;
+            send_mess[10] = 0;
+            send_mess[11] = 0;
+            send_mess[12] = 0;
+            send_mess[13] = 0;
             contr_sum = 0;
             for (var i = 0; i <= send_mess.Length - 1; i++)
             {
                 contr_sum = contr_sum ^ send_mess[i];
             }
 
-            send_mess[9] = (byte)contr_sum;                 // контрольная сумма   
-            s_port.Write(send_mess, 0, 10);
+            send_mess[14] = (byte)contr_sum;                 // контрольная сумма   
+            s_port.Write(send_mess, 0, 15);
             /*
             try
             {
@@ -209,8 +216,8 @@ namespace welding
             {
                 s_port.DiscardInBuffer();
                 s_port.DiscardOutBuffer();
-                Array.Clear(send_mess, 0, 10);
-                Array.Clear(enter_mess, 0, 10);
+                Array.Clear(send_mess, 0, 15);
+                Array.Clear(enter_mess, 0, 15);
                 txt = "";
                 txt1 = "";
                 float feed_speed_d_1 = 0;
@@ -220,28 +227,35 @@ namespace welding
                 int feed_speed_h = feed_speed >> 8;
                 int feed_distance_l = feed_distance;
                 int feed_distance_h = feed_distance >> 8;
+                int bias_voltage_h = bias_voltage >> 8;
+                int bias_voltage_l = bias_voltage;
 
 
 
 
 
-                send_mess[0] = (byte)id_mess;                   // id сообщения
-                send_mess[1] = (byte)mode;                      // режим работы (0000- проверка связи, 0001 - режим "Ручной", 0010 - режим "По току сварки", 0011 - режим "По току проволоки", 0100 - режим "Циклограмма") 
-                send_mess[2] = (byte)start;                     // команда включина или выключена программа (0 - стоп, 1- сторт, 2 реверс)
-                send_mess[3] = (byte)auto_revers;               // автоматический реверс
-                send_mess[4] = (byte)feed_speed_h;              // скорость подачи (старший байт)
-                send_mess[5] = (byte)feed_speed_l;              // скорость подачи (младший байт)
-                send_mess[6] = (byte)feed_distance_h;           // расстояние подачи (старший байт)
-                send_mess[7] = (byte)feed_distance_l;           // расстояние подачи (младший байт)
-                send_mess[8] = (byte)revers_distance;            // расстояние реверса 
+                send_mess[0] =  (byte)id_mess;                  // id сообщения
+                send_mess[1] =  (byte)mode;                     // режим работы (0000- проверка связи, 0001 - режим "Ручной", 0010 - режим "По току сварки", 0011 - режим "По току проволоки", 0100 - режим "Циклограмма") 
+                send_mess[2] =  (byte)start;                    // команда включина или выключена программа (0 - стоп, 1- сторт, 2 реверс)
+                send_mess[3] =  (byte)auto_revers;              // автоматический реверс
+                send_mess[4] =  (byte)feed_speed_h;             // скорость подачи (старший байт)
+                send_mess[5] =  (byte)feed_speed_l;             // скорость подачи (младший байт)
+                send_mess[6] =  (byte)feed_distance_h;          // расстояние подачи (старший байт)
+                send_mess[7] =  (byte)feed_distance_l;          // расстояние подачи (младший байт)
+                send_mess[8] =  (byte)revers_distance;          // расстояние реверса 
+                send_mess[9] =  (byte)start_on_current;         // вкл., выкл. старт по току пучка
+                send_mess[10] = (byte)current_start;            // расстояние реверса 
+                send_mess[11] = (byte)current_stop;             // расстояние реверса 
+                send_mess[12] = (byte)bias_voltage_h;             // напряжение смещения 
+                send_mess[13] = (byte)bias_voltage_l;             // напряжение смещения 
                 contr_sum = 0;
                 for (var i = 0; i <= send_mess.Length - 1; i++)
                 {
                     contr_sum = contr_sum ^ send_mess[i];
                 }
 
-                send_mess[9] = (byte)contr_sum;                 // контрольная сумма    
-                try { s_port.Write(send_mess, 0, 10); }
+                send_mess[14] = (byte)contr_sum;                 // контрольная сумма    
+                try { s_port.Write(send_mess, 0, 15); }
 
                 catch (Exception)
                 {
@@ -280,6 +294,21 @@ namespace welding
             }
 
         }
+        private void Read_fanction()
+        {
+            if (s_port.IsOpen == true)
+            {
+                try
+                {
+                    System.Threading.Thread.Sleep(3);
+                    s_port.Read(enter_mess, 0, 14);
+                }
+                catch(Exception)
+                {
+
+                }
+            }
+        }
 
         public MainWindow()
         {
@@ -288,16 +317,19 @@ namespace welding
             
             screen_1.Text = Properties.Settings.Default.current_start.ToString();
             screen_2.Text = Properties.Settings.Default.current_stop.ToString();
+            screen_volt.Text = Properties.Settings.Default.bias_voltage.ToString();
             screen_hand_mode_1.Text = feed_speed_d.ToString("F1");
             screen_hand_mode_podachi.Text = feed_distance.ToString();
-            screen_rev.Text = revers_distance.ToString();
+            screen_rev.Text = Properties.Settings.Default.revers_distance.ToString();
             GetAvaileblePorts();
             timer_connect.Interval = TimeSpan.FromSeconds(1);
             timer_connect.Tick += T_Tick;
             timer_connect.Start();
             // проверка связи
             
+            
         }
+        
         private void Main_window_load(object sender, RoutedEventArgs e)
         {
             
@@ -309,10 +341,13 @@ namespace welding
             if (start_on_current == 1) { on_start_2.Visibility = Visibility.Visible; screen_1.IsEnabled = true; screen_2.IsEnabled = true; }
             else if (start_on_current == 0) { on_start_2.Visibility = Visibility.Hidden; screen_1.IsEnabled = false; screen_2.IsEnabled = false; }
 
-            // ток начала сварки
+            
             current_start = Properties.Settings.Default.current_start;
             current_stop = Properties.Settings.Default.current_stop;
+            bias_voltage = Properties.Settings.Default.bias_voltage;
             mode = Properties.Settings.Default.mode;
+            auto_revers = Properties.Settings.Default.auto_revers;
+            revers_distance = Properties.Settings.Default.revers_distance;
 
             // инициализация видимости режимов
             switch (mode)
@@ -325,6 +360,16 @@ namespace welding
                     hand_mode_grig.Visibility = Visibility.Hidden; border_hand_mode.Visibility = Visibility.Hidden; on_hand_mode.Visibility = Visibility.Hidden;
                     on_cik.Visibility = Visibility.Visible; ciklogramma_grid.Visibility = Visibility.Visible; border_cik.Visibility = Visibility.Visible;
                     break;
+            }
+            switch (auto_revers)
+            {
+                case 0:
+                    on_autu_rev.Visibility = Visibility.Hidden;
+                    break;
+                case 1:
+                    on_autu_rev.Visibility = Visibility.Visible;
+                    break;
+                
             }
             // ручной режим
             if (feed_distance == 0) { on_podachi.Visibility = Visibility.Hidden; screen_hand_mode_podachi.IsEnabled = false; }
@@ -343,32 +388,35 @@ namespace welding
         
         private void butteb_up_1_Click(object sender, RoutedEventArgs e)
         {
-            if (start_on_current == 0) { current_start = -1; }
-            if (current_start >= 999) { current_start = 998; }
             current_start++;
+            if (current_start >= 999) { current_start = 999; }
             screen_1.Text = current_start.ToString();
+            if (start_on_current == 1) { Send_function(); }
         }
 
         private void button_down_1_Click(object sender, RoutedEventArgs e)
         {
-            
             current_start--;
+            if (current_start <= 0) { current_start = 0; }
             screen_1.Text = current_start.ToString();
+            if (start_on_current == 1) { Send_function(); }
         }
 
         private void butteb_up_2_Click(object sender, RoutedEventArgs e)
         {
-            if (current_stop >= 999) { current_stop = 998; }
             current_stop++;
+            if (current_stop >= 999) { current_stop = 999; }
             screen_2.Text = current_stop.ToString();
+            if (start_on_current == 1) { Send_function(); }
         }
 
         private void button_down_2_Click(object sender, RoutedEventArgs e)
         {
-            if (current_stop <=0) { current_stop = 1; }
             current_stop--;
+            if (current_stop <= 0) { current_stop = 0; }
             screen_2.Text = current_stop.ToString();
-            
+            if (start_on_current == 1) { Send_function(); }
+
         }
 
         
@@ -381,7 +429,7 @@ namespace welding
            
             string s1 = screen_1.Text;
             screen_1.MaxLength = 3;
-             if (s1.Count() < 1 || start_on_current == 0) { s1 = "0"; }
+             if (s1.Count() < 1) { s1 = "0"; }
              current_start = Int32.Parse(s1);
             Properties.Settings.Default.current_start = current_start;
 
@@ -457,6 +505,7 @@ namespace welding
             if (start_on_current == 1) { on_start_2.Visibility = Visibility.Visible; screen_1.IsEnabled = true; screen_2.IsEnabled = true;}
             else if (start_on_current == 0) { on_start_2.Visibility = Visibility.Hidden; screen_1.IsEnabled = false; screen_2.IsEnabled = false; }
             Properties.Settings.Default.start_on_current = start_on_current;
+            Send_function();
 
             
 
@@ -482,9 +531,10 @@ namespace welding
         
         private void butteb_up_speed_hand_mode_Click(object sender, RoutedEventArgs e)
         {
-            if (feed_speed_d >= (float)16) { feed_speed_d = (float)15.9; }
+            
             feed_speed_d = feed_speed_d + (float)0.1;
-           screen_hand_mode_1.Text = screen_hand_mode_1.Text.Replace(".", ",");
+            if (feed_speed_d >= (float)16) { feed_speed_d = (float)16; }
+            screen_hand_mode_1.Text = screen_hand_mode_1.Text.Replace(".", ",");
             screen_hand_mode_1.Text = feed_speed_d.ToString("F1");
             Properties.Settings.Default.feed_speed_d = feed_speed_d;
             Send_function();
@@ -494,8 +544,9 @@ namespace welding
 
         private void button_down_speed_hand_mode_Click(object sender, RoutedEventArgs e)
         {
-            if (feed_speed_d <= (float)0) { feed_speed_d = (float)0.1; }
+            
             feed_speed_d = feed_speed_d - (float)0.1; ;
+            if (feed_speed_d <= (float)0) { feed_speed_d = (float)0; }
             screen_hand_mode_1.Text = screen_hand_mode_1.Text.Replace(".", ",");
             screen_hand_mode_1.Text = feed_speed_d.ToString("F1");
             Properties.Settings.Default.feed_speed_d = feed_speed_d;
@@ -510,20 +561,24 @@ namespace welding
             s4 = s4.Replace(".", ",");
             screen_hand_mode_1.MaxLength = 4;
             if (s4.Count() < 1) { s4 = "0"; }
-            feed_speed_d = float.Parse(s4);
+            try
+            {
+                feed_speed_d = float.Parse(s4);
+            }
+            catch(Exception)
+            { }
+            
+          
             if (feed_speed_d > (float)16) { feed_speed_d = (float)15.9; }
             Properties.Settings.Default.feed_speed_d = feed_speed_d;
             if (start == 1 && feed_speed_d!= 0) { Send_function(); }
             
-           
-
-
         }
 
         private void butteb_up_podachi_Click(object sender, RoutedEventArgs e)
         {
-            if (feed_distance >= 9999) { feed_distance = 9998; }
             feed_distance++;
+            if (feed_distance >= 9999) { feed_distance = 9999; }
             screen_hand_mode_podachi.Text = feed_distance.ToString();
             Properties.Settings.Default.feed_distance = feed_distance;
             Send_function();
@@ -531,8 +586,8 @@ namespace welding
 
         private void button_down_podachi_Click(object sender, RoutedEventArgs e)
         {
-            if (feed_distance <= 0) { feed_distance = 1; }
             feed_distance--;
+            if (feed_distance <= 0) { feed_distance = 0; }
             screen_hand_mode_podachi.Text = feed_distance.ToString();
             Properties.Settings.Default.feed_distance = feed_distance;
             Send_function();
@@ -649,8 +704,8 @@ namespace welding
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
 
-            Array.Clear(send_mess, 0, 9);
-            Array.Clear(enter_mess, 0, 9);
+            Array.Clear(send_mess, 0, 15);
+            Array.Clear(enter_mess, 0, 15);
             
 
 
@@ -679,6 +734,7 @@ namespace welding
             if (auto_revers == 2) { auto_revers = 0; }
             if (auto_revers == 1) { on_autu_rev.Visibility = Visibility.Visible; }
             else if (auto_revers == 0) { on_autu_rev.Visibility = Visibility.Hidden; }
+            Properties.Settings.Default.auto_revers = auto_revers;
         }
 
         private void close_com_option_Click(object sender, RoutedEventArgs e)
@@ -699,7 +755,17 @@ namespace welding
 
         private void screen_hand_mode_1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (!Char.IsDigit(e.Text, 0)) e.Handled = true;
+            
+            if ((!Char.IsDigit(e.Text, 0)) && (e.Text != ",") && (e.Text != "."))
+            {
+                { e.Handled = true; }
+            }
+            /*
+            else if ((e.Text == ",") && ((screen_hand_mode_1.Text.IndexOf(",") != -1) || (screen_hand_mode_1.Text == "")))
+            { e.Handled = true; }
+            else if ((e.Text == ".") && ((screen_hand_mode_1.Text.IndexOf(".") != -1) || (screen_hand_mode_1.Text == "")))
+            { e.Handled = true; }
+            */
         }
 
         private void screen_1_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -714,7 +780,10 @@ namespace welding
 
         private void screen_volt_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (!Char.IsDigit(e.Text, 0)) e.Handled = true;
+           
+           
+            if (!Char.IsDigit(e.Text, 0) && (e.Text != "-")) e.Handled = true;
+            
         }
 
         private void screen_rev_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -733,30 +802,28 @@ namespace welding
             screen_rev.MaxLength = 2;
             if (s6.Count() < 1) { s6 = "0"; }
             if (feed_distance > 99) { feed_distance = 98; }
-
             revers_distance = Int32.Parse(s6);
+            Properties.Settings.Default.revers_distance = revers_distance;
 
-            if (feed_distance > 0) { on_podachi.Visibility = Visibility.Visible; screen_hand_mode_podachi.IsEnabled = true; }
-            Properties.Settings.Default.feed_distance = feed_distance;
-            if (start == 1 && feed_distance != 0) { Send_function(); }
+
         }
 
         private void butteb_up_rev_Click(object sender, RoutedEventArgs e)
         {
             
-            if (revers_distance > 99) { revers_distance = 98; }
+           
             revers_distance++;
+            if (revers_distance > 99) { revers_distance = 99; }
             screen_rev.Text = revers_distance.ToString();
-                
-            
-            Send_function();
+             Send_function();
         }
 
         private void button_down_rev_Click(object sender, RoutedEventArgs e)
         {
             
-            if (revers_distance<=0) { revers_distance = 1; }
+            
             revers_distance--;
+            if (revers_distance <= 0) { revers_distance = 0; }
             screen_rev.Text = revers_distance.ToString();
 
 
@@ -768,6 +835,45 @@ namespace welding
             InstruktionWindow instruktionWindow = new InstruktionWindow();
             instruktionWindow.Show();
 
+        }
+
+        private void screen_volt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string s7 = screen_volt.Text;
+            
+            
+            screen_volt.MaxLength = 4;
+            if (s7.Count() < 1) { s7 = "0"; }
+            try
+            {
+                bias_voltage = Int32.Parse(s7);
+            }
+            catch(Exception)
+            { }
+            if (bias_voltage > 999) { bias_voltage = 999; }
+
+            
+           
+            Properties.Settings.Default.bias_voltage = bias_voltage;
+            if (start == 1 && bias_voltage != 0) { Send_function(); }
+        }
+
+        private void butteb_up_2_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            
+            bias_voltage++;
+            if (bias_voltage > 999) { bias_voltage = 999; }
+            screen_volt.Text = bias_voltage.ToString();
+            Send_function();
+        }
+
+        private void button_down_2_Copy_Click(object sender, RoutedEventArgs e)
+        {
+             
+            bias_voltage--;
+            if (bias_voltage < -999) { bias_voltage = -999; }
+            screen_volt.Text = bias_voltage.ToString();
+            Send_function();
         }
     }
 }
