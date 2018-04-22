@@ -483,7 +483,7 @@
                     <MenuItem Header="Как точки" Foreground="#FF343434" FontFamily="Arial" Cursor="Hand"/>
                 </MenuItem>
                 <MenuItem Header="Справка">
-                    <MenuItem Header="Инструкция" Foreground="#FF343434" FontFamily="Arial" Cursor="Hand"/>
+                    <MenuItem Header="Инструкция" Foreground="#FF343434" FontFamily="Arial" Cursor="Hand" Click="MenuItem_Click"/>
                     <MenuItem Header="О программе" Foreground="#FF343434" FontFamily="Arial" Cursor="Hand" Click="MenuItem_Click_3"/>
                 </MenuItem>
                 <MenuItem Header="Свернуть" Click="MenuItem_Click_2" Foreground="#FF343434" FontFamily="Arial" Cursor="Hand"/>

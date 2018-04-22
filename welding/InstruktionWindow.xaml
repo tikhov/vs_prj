@@ -1,0 +1,334 @@
+﻿<Window x:Class="welding.InstruktionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:welding"
+        mc:Ignorable="d"
+        Title="InstruktionWindow" Height="450" Width="796" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Button Content="Oк" Margin="707,410,0,10" HorizontalAlignment="Left" Width="75" Click="Button_Click"/>
+        <RichTextBox HorizontalAlignment="Left" Height="422" Margin="10,10,0,0" VerticalAlignment="Top" Width="692" VerticalScrollBarVisibility="Visible">
+            <FlowDocument>
+                <Paragraph FontSize="16" FontFamily="Arial" Margin="0" TextAlignment="Left"/>
+                <Paragraph FontSize="16" FontFamily="Arial" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="ОПИСАНИЕ ПРОГРАММЫ УПРАВЛЕНИЯ МЕХАНИЗМОМ ПОДАЧИ ПРИСАДОЧНОЙ ПРОВОЛОКИ В ЗОНУ ЭЛЕКТРОННО-ЛУЧЕВОЙ СВАРКИ"/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Arial" Margin="0" TextAlignment="Left"/>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="Панель управления программы поделена на четыре части:"/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="1. Левый верхний квадрант – зона управления механизмом."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="1.1 Кнопка &quot;ПУСК&quot; – начало подачи проволоки в соответствии с установленными параметрами."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Учитывается ожидание начала подачи при включенной функции &quot;ПУСК ПО ТОКУ ПУЧКА&quot;"/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Учитывается &quot;ЗАДЕРЖКА&quot; подачи в режиме &quot;ЦИКЛОГРАММА&quot;."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="1.2 &quot;СТОП&quot; – остановка подачи в соответствии с установленными параметрами. "/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Остановка подачи происходит мгновенно во всех режимах работы, кроме режима &quot;ЦИКЛОГРАММА&quot; – в нем скорость подачи уменьшается плавно с учетом выставленных параметров &quot;ВРЕМЯ СПАДА&quot; и &quot;ПОДАЧА ПОСЛЕ ОКОНЧАНИЯ&quot;?."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="1.3 &quot;ПУСК ПО ТОКУ ПУЧКА&quot; – когда функция активна, начало выполнения программы при нажатия кнопки &quot;ПУСК&quot;  откладывается до момента нарастания тока сварки до заданной величины. "/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Применяется для удобства синхронизации работы ЭЛУ и подающего механизма. Оператор включает эту функцию, нажимает &quot;ПУСК&quot;, а после запускает электронный луч."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="1.3.1 &quot;ТОК НАЧАЛА ПОДАЧИ&quot; (0"/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text=" ÷ "/>
+                    </Span>
+                    <Span>
+                        <Run Text="999 мА) – значение тока сварки (тока электронного пучка), при достижении которого начинает осуществляться подача проволоки в соответствии с установленными настройками."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="1.3.2 &quot;ТОК КОНЦА ПОДАЧИ&quot; (0"/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text=" ÷ "/>
+                    </Span>
+                    <Span>
+                        <Run Text="998 мА) – значение тока сварки (тока электронного пучка), при снижении до которого прекращается подача проволоки в соответствии с установленными настройками. "/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Значение тока конца подачи должно быть меньше тока начала подачи."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="1.4 &quot;РЕВЕРС&quot; (0"/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text=" ÷ "/>
+                    </Span>
+                    <Span>
+                        <Run Text="99 мм) – при нажатии проволока втягивается в механизм подачи на установленную величину. Реверс происходит со скоростью, величина которой установлена в ручном режиме."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Реверс не может быть осуществлен во время выполнения программы (после нажатия &quot;ПУСК&quot;)"/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="1.4.1 &quot;V&quot; – маркер в функции реверса. Когда активен, реверс происходит каждый раз после окончания программы. (Отводит конец проволоки из зоны электронного пучка, чтобы проволока не приваривалась к изделию)."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left"/>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="1.5 &quot;НАПРЯЖЕНИЕ СМЕЩЕНИЯ&quot; (-"/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="150 ÷ +150 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="В) – подача постоянного напряжения на проволоку."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Напряжение смещения может подаваться на проволоку, регулироваться и сниматься в любом режиме работы программы."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left"/>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="2. Правый верхний квадрант – зона индикации. Здесь ничего не меняется,"/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="2.1 &quot;ТОК СВАРКИ&quot; (0"/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text=" ÷ "/>
+                    </Span>
+                    <Span>
+                        <Run Text="999 мА) – индикация тока сварки. Данные поступают от аналогового сигнала с ЭЛУ."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="2.2 &quot;СКОРОСТЬ ПОДАЧИ ПРОВОЛОКИ&quot; (0"/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text=" ÷ 3"/>
+                    </Span>
+                    <Span>
+                        <Run Text="0,0 м/мин) – индикация скорости подачи проволоки. Данные поступают с энкодера, установленного на валу двигателя подающего механизма."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="2.3 &quot;ТОК ЧЕРЕЗ ПРОВОЛОКУ&quot; (0 "/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="÷ 999 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="мА) – индикация тока отраженных электронов пучка, проходящих через проволоку на землю при подаче напряжения смещения (или без него). Данные поступают с датчика Холла."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="2.4 &quot;НАПРЯЖЕНИЕ СМЕЩЕНИЯ&quot; (-150 "/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="÷ +150 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="В) – индикация напряжения на проволоке относительно земли. Данные поступают с выхода источника напряжения (с корпуса подающего механизма)."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="2.5 &quot;ДЛИНА ПОДАЧИ ПРОВОЛОКИ&quot; – индикация количества проволоки, поданного механизмом. Данные поступают с энкодера."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="2.5.1 &quot;ЗА ОДИН ЦИКЛ&quot; (0 "/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="÷ 999"/>
+                    </Span>
+                    <Span>
+                        <Run Text=",9 м) – длина проволоки, поданной за один цикл работы программы (с момента нажатия кнопки &quot;ПУСК&quot; до момента остановки подающего механизма). "/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Значение на индикаторе сохраняется до следующего нажатия кнопки &quot;ПУСК&quot;. После нажатия данные начинают обновляться."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="2.5.2 &quot;ЗА ВСЕ ВРЕМЯ РАБОТЫ&quot; (0 "/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="÷ 9999 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="м)  - длина проволоки, поданной за все время работы программы (с момента запуска до выхода из программы)."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left"/>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3. Левый нижний квадрант – зона управления режимами подачи проволоки. "/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Одновременно может быть активен только один режим."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.1 &quot;РУЧНОЙ РЕЖИМ&quot; – проволока подается по установленным параметрам. Обратные связи механизма не оказывают влияния на скорость подачи."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.1.1 &quot;СКОРОСТЬ ПОДАЧИ&quot; (0 "/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="÷ 30,0 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="м/мин) – основной параметр режима."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.1.2 &quot;РАССТОЯНИЕ ПОДАЧИ&quot; (0 "/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="÷ 999,9 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="м) – когда эта функция активна, программа останавливается, после подачи установленной длины проволоки."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Активировать эту функцию можно только до начала выполнения программы."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.2 Режим &quot;ЦИКЛОГРАММА&quot; – скорость подачи проволоки не постоянна, а меняется во времени."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.2.1 &quot;ЗАДЕРЖКА&quot; (60,0 сек) – задержка начала подачи проволоки после нажатия кнопки &quot;ПУСК&quot;"/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.2.2 &quot;ВРЕМЯ НАРАСТАНИЯ&quot; (60,0 сек) – время, в течение которого скорость подачи будет увеличиваться от &quot;0&quot; до значения &quot;СКОРОСТЬ ПОДАЧИ 1&quot;."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.2.3 &quot;СКОРОСТЬ ПОДАЧИ 1&quot; (0,1"/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text=" ÷ 30,0 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="м/мин) – основная рабочая скорость подачи проволоки."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.2.4 &quot;СКОРОСТЬ ПОДАЧИ 2&quot; ("/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="0 ÷ 30,0 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="м/мин) – если не равно &quot;0&quot;, то это вторая рабочая скорость подачи проволоки, которая чередуется с первой через установленные интервалы времени"/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.2.5 &quot;ВРЕМЯ 1&quot; (0 "/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="÷ 60,0 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="сек) – если не равно &quot;0&quot;, то это время, в течение которого проволока подается со &quot;скоростью подачи 1&quot;, а по завершении этого времени переключается на &quot;скоростью подачи 2&quot;."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="3.2.6 &quot;ВРЕМЯ 2&quot; (0 "/>
+                    </Span>
+                    <Span FontFamily="Times New Roman">
+                        <Run Text="÷ 60,0 "/>
+                    </Span>
+                    <Span>
+                        <Run Text="сек) – то же, что и в п. 3.2.5, только для &quot;скорости подачи 2&quot;."/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="- Пункты 3.2.4, 3.2.5, 3.2.6 настраивают импульсный режим работы подающего механизма. Импульсный режим активен, когда все три значения в этих пунктах не равны &quot;0&quot;. "/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="36,0,0,0" TextAlignment="Left">
+                    <Span>
+                        <Run Text="Если хоть один из них равен &quot;0&quot;, проволока все время подается со &quot;скоростью подачи 1&quot;"/>
+                    </Span>
+                </Paragraph>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left"/>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left"/>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left"/>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left"/>
+                <Paragraph FontSize="16" FontFamily="Times New Roman" Margin="0" TextAlignment="Left"/>
+            </FlowDocument>
+        </RichTextBox>
+
+
+    </Grid>
+</Window>

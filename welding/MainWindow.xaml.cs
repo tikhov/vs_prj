@@ -762,5 +762,12 @@ namespace welding
 
             Send_function();
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            InstruktionWindow instruktionWindow = new InstruktionWindow();
+            instruktionWindow.Show();
+
+        }
     }
 }

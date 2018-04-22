@@ -225,3 +225,5 @@ C:\Users\acer_laptop\Source\Repos\vs_prj\welding\obj\Debug\welding.csproj.Genera
 C:\Users\acer_laptop\Source\Repos\vs_prj\welding\obj\Debug\welding.csproj.CoreCompileInputs.cache
 C:\Users\acer_laptop\Source\Repos\vs_prj\welding\obj\Debug\welding.exe
 C:\Users\acer_laptop\Source\Repos\vs_prj\welding\obj\Debug\welding.pdb
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\InstruktionWindow.g.cs
+D:\work_folder\tikhov\vs_prj\welding\obj\Debug\InstruktionWindow.baml
