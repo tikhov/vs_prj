@@ -36,14 +36,21 @@ namespace welding
         int id_mess = 1;         // идентификатор сообщения
         int contr_sum;           // контрольная сумма
 
-        byte[] enter_mess = new byte[15];
+        byte[] enter_mess = new byte[14];
         byte[] send_mess = new byte[15];
         string txt = "";
         string txt1 = "";
         int qqq;
         int error_connect_q = 0;
         int check_conn = 0;
-       
+
+        // индикаторы
+        int current_welding_ind;     // ток сварки
+        int wire_speed_ind;          // скорость подачи проволки
+        int current__wire_ind;       // ток через проволку
+        int bias_voltage_ind;        // напряжение смещения
+        int distance_one_ind;        // длина подачи за один цикл
+        int distance_all_ind;        // вся длина подачи
 
 
         int current_start;    // ток начала подачи
@@ -156,7 +163,7 @@ namespace welding
             s_port.DiscardInBuffer();
             s_port.DiscardOutBuffer();
             Array.Clear(send_mess, 0, 15);
-            Array.Clear(enter_mess, 0, 15);
+            Array.Clear(enter_mess, 0, 14);
             send_mess[0] = 1;
             send_mess[1] = 0;
             send_mess[2] = 0;
@@ -217,7 +224,7 @@ namespace welding
                 s_port.DiscardInBuffer();
                 s_port.DiscardOutBuffer();
                 Array.Clear(send_mess, 0, 15);
-                Array.Clear(enter_mess, 0, 15);
+                Array.Clear(enter_mess, 0, 14);
                 txt = "";
                 txt1 = "";
                 float feed_speed_d_1 = 0;
@@ -267,7 +274,7 @@ namespace welding
                 try
                 {
                     System.Threading.Thread.Sleep(3);
-                    s_port.Read(enter_mess, 0, 3);
+                    s_port.Read(enter_mess, 0, 14);
 
                 }
                 catch (InvalidOperationException)
@@ -298,10 +305,31 @@ namespace welding
         {
             if (s_port.IsOpen == true)
             {
+                /*
+                 enter_mess[0]  ток сварки (старший байт) 
+                 enter_mess[1]  ток сварки (младший байт)
+                 enter_mess[2]  длина подачи за цикл (старший байт)
+                 enter_mess[3]  длина подачи за цикл (младший байт)
+                 enter_mess[4]  скорость подачи (старший байт)
+                 enter_mess[5]  скорость продачи (младший байт)
+                 enter_mess[6]  ток пучка (старший байт)
+                 enter_mess[7]  ток пучка (младший байт)
+                 enter_mess[8]  ток через проволки (старший байт)
+                 enter_mess[9]  ток через проволки (младший байт)
+                 enter_mess[10] напряжение смещения (старший байт) 
+                 enter_mess[11] напряжение смещения (младший байт)
+                 enter_mess[12] работа/стоп
+                 enter_mess[13] контрольная сумма
+                 */
+
                 try
                 {
                     System.Threading.Thread.Sleep(3);
                     s_port.Read(enter_mess, 0, 14);
+
+                    current_welding_ind = BitConverter.ToInt32(enter_mess[0], 0);
+                    start = (int)enter_mess[12];
+
                 }
                 catch(Exception)
                 {
@@ -705,7 +733,7 @@ namespace welding
         {
 
             Array.Clear(send_mess, 0, 15);
-            Array.Clear(enter_mess, 0, 15);
+            Array.Clear(enter_mess, 0, 14);
             
 
 
