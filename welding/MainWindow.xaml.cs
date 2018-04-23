@@ -244,10 +244,10 @@ namespace welding
                 send_mess[7] =  (byte)feed_distance_l;          // расстояние подачи (младший байт)
                 send_mess[8] =  (byte)revers_distance;          // расстояние реверса 
                 send_mess[9] =  (byte)start_on_current;         // вкл., выкл. старт по току пучка
-                send_mess[10] = (byte)current_start;            // расстояние реверса 
-                send_mess[11] = (byte)current_stop;             // расстояние реверса 
-                send_mess[12] = (byte)bias_voltage_h;             // напряжение смещения 
-                send_mess[13] = (byte)bias_voltage_l;             // напряжение смещения 
+                send_mess[10] = (byte)current_start;            // ток начала подачи
+                send_mess[11] = (byte)current_stop;             // ток конца подачи
+                send_mess[12] = (byte)bias_voltage_h;           // напряжение смещения (старший байт)
+                send_mess[13] = (byte)bias_voltage_l;           // напряжение смещения (младший байт)
                 contr_sum = 0;
                 for (var i = 0; i <= send_mess.Length - 1; i++)
                 {
