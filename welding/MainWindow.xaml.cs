@@ -27,6 +27,7 @@ namespace welding
     {
         SerialPort s_port = new SerialPort();
         DispatcherTimer timer_connect = new DispatcherTimer();
+        DispatcherTimer timer_flow = new DispatcherTimer();
        
 
 
@@ -45,12 +46,12 @@ namespace welding
         int check_conn = 0;
 
         // индикаторы
-        int current_welding_ind;     // ток сварки
-        int wire_speed_ind;          // скорость подачи проволки
-        int current__wire_ind;       // ток через проволку
-        int bias_voltage_ind;        // напряжение смещения
-        int distance_one_ind;        // длина подачи за один цикл
-        int distance_all_ind;        // вся длина подачи
+        int current_welding_ind = 0;     // ток сварки
+        int wire_speed_ind = 0;          // скорость подачи проволки
+        int current__wire_ind = 0;       // ток через проволку
+        int bias_voltage_ind = 0;        // напряжение смещения
+        int distance_one_ind = 0;        // длина подачи за один цикл
+        int distance_all_ind = 0;        // вся длина подачи
 
 
         int current_start;    // ток начала подачи
@@ -320,21 +321,50 @@ namespace welding
                  enter_mess[11] напряжение смещения (младший байт)
                  enter_mess[12] работа/стоп
                  enter_mess[13] контрольная сумма
+
+                int current_welding_ind = 0;     // ток сварки
+                int wire_speed_ind      = 0;     // скорость подачи проволки
+                int current__wire_ind   = 0;     // ток через проволку
+                int bias_voltage_ind    = 0;     // напряжение смещения
+                int distance_one_ind    = 0;     // длина подачи за один цикл
+                int distance_all_ind    = 0;     // вся длина подачи
                  */
 
                 try
                 {
                     System.Threading.Thread.Sleep(3);
                     s_port.Read(enter_mess, 0, 14);
+                    int control_sum_enter_mess = 0;
 
-                    current_welding_ind = BitConverter.ToInt32(enter_mess[0], 0);
-                    start = (int)enter_mess[12];
+                    for (var i = 0; i <= enter_mess.Length - 1; i++)
+                    {
+                        control_sum_enter_mess = control_sum_enter_mess ^ send_mess[i];
+                    }
 
+                    if (control_sum_enter_mess == (int)enter_mess[13])
+                    {
+                        current_welding_ind = ((int)enter_mess[0] << 8) | enter_mess[1];
+                        distance_one_ind = ((int)enter_mess[2] << 8) | enter_mess[3];
+                        wire_speed_ind = ((int)enter_mess[4] << 8) | enter_mess[5];
+                        current__wire_ind = ((int)enter_mess[8] << 8) | enter_mess[9];
+                        bias_voltage_ind = ((int)enter_mess[10] << 8) | enter_mess[11];
+                        start = enter_mess[12];
+                    }
                 }
                 catch(Exception)
                 {
 
                 }
+            }
+        }
+        void Reed_line_function()
+        {
+            timer_flow.Interval = TimeSpan.FromMilliseconds(5);
+            timer_flow.Tick += Timer_flow_tick;
+            timer_flow.Start();
+             void Timer_flow_tick(object sender, EventArgs e)
+            {
+                Read_fanction();
             }
         }
 
