@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO.Ports;
 using System.Windows.Threading;
+using System.Threading;
 using System.Globalization;
 namespace welding
 
@@ -25,9 +26,13 @@ namespace welding
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         SerialPort s_port = new SerialPort();
+       
         DispatcherTimer timer_connect = new DispatcherTimer();
         DispatcherTimer timer_flow = new DispatcherTimer();
+        DispatcherTimer indicator_timer = new DispatcherTimer();
+        
        
 
 
@@ -302,7 +307,7 @@ namespace welding
             }
 
         }
-        private void Read_fanction()
+         void Read_fanction()
         {
             if (s_port.IsOpen == true)
             {
@@ -357,16 +362,7 @@ namespace welding
                 }
             }
         }
-        void Reed_line_function()
-        {
-            timer_flow.Interval = TimeSpan.FromMilliseconds(5);
-            timer_flow.Tick += Timer_flow_tick;
-            timer_flow.Start();
-             void Timer_flow_tick(object sender, EventArgs e)
-            {
-                Read_fanction();
-            }
-        }
+       
 
         public MainWindow()
         {
@@ -379,17 +375,101 @@ namespace welding
             screen_hand_mode_1.Text = feed_speed_d.ToString("F1");
             screen_hand_mode_podachi.Text = feed_distance.ToString();
             screen_rev.Text = Properties.Settings.Default.revers_distance.ToString();
+            welding_cureent_screen.Text = current_welding_ind.ToString();
+            speed_of_filing.Text = wire_speed_ind.ToString();
+            current_though_wire.Text = current__wire_ind.ToString();
+            bias_voltage_crreen.Text = bias_voltage_ind.ToString();
+            screen_one_cikl.Text = distance_one_ind.ToString();
+            screen_all_time.Text = distance_all_ind.ToString();
             GetAvaileblePorts();
             timer_connect.Interval = TimeSpan.FromSeconds(1);
             timer_connect.Tick += T_Tick;
             timer_connect.Start();
+            Thread myThread = new Thread(Reed_line_function);
+            myThread.Start();
             // проверка связи
-            
-            
+
+
+
         }
-        
+        void Reed_line_function()
+        {
+
+
+            while (true)
+            {
+                Thread.Sleep(5);
+                if (s_port.IsOpen == true)
+                {
+
+                    /*
+                     enter_mess[0]  ток сварки (старший байт) 
+                     enter_mess[1]  ток сварки (младший байт)
+                     enter_mess[2]  длина подачи за цикл (старший байт)
+                     enter_mess[3]  длина подачи за цикл (младший байт)
+                     enter_mess[4]  скорость подачи (старший байт)
+                     enter_mess[5]  скорость продачи (младший байт)
+                     enter_mess[6]  ток пучка (старший байт)
+                     enter_mess[7]  ток пучка (младший байт)
+                     enter_mess[8]  ток через проволки (старший байт)
+                     enter_mess[9]  ток через проволки (младший байт)
+                     enter_mess[10] напряжение смещения (старший байт) 
+                     enter_mess[11] напряжение смещения (младший байт)
+                     enter_mess[12] работа/стоп
+                     enter_mess[13] контрольная сумма
+
+                    int current_welding_ind = 0;     // ток сварки
+                    int wire_speed_ind      = 0;     // скорость подачи проволки
+                    int current__wire_ind   = 0;     // ток через проволку
+                    int bias_voltage_ind    = 0;     // напряжение смещения
+                    int distance_one_ind    = 0;     // длина подачи за один цикл
+                    int distance_all_ind    = 0;     // вся длина подачи
+                     */
+
+                    try
+                    {
+                        
+                        s_port.Read(enter_mess, 0, 14);
+                        int control_sum_enter_mess = 0;
+
+                        for (var i = 0; i <= enter_mess.Length - 1; i++)
+                        {
+                            control_sum_enter_mess = control_sum_enter_mess ^ send_mess[i];
+                        }
+
+                        if (control_sum_enter_mess == (int)enter_mess[13])
+                        {
+                            current_welding_ind = ((int)enter_mess[0] << 8) | enter_mess[1];
+                            distance_one_ind = ((int)enter_mess[2] << 8) | enter_mess[3];
+                            wire_speed_ind = ((int)enter_mess[4] << 8) | enter_mess[5];
+                            current__wire_ind = ((int)enter_mess[8] << 8) | enter_mess[9];
+                            bias_voltage_ind = ((int)enter_mess[10] << 8) | enter_mess[11];
+                            start = enter_mess[12];
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        
+                    }
+                }
+                /*else
+                {
+                    current_welding_ind++;
+                    wire_speed_ind++;
+                    current__wire_ind++;
+                    bias_voltage_ind++;
+                    distance_one_ind++;
+                    distance_all_ind++;
+                }
+                */
+            }
+        }
+
         private void Main_window_load(object sender, RoutedEventArgs e)
         {
+            indicator_timer.Interval = TimeSpan.FromMilliseconds(100);
+            indicator_timer.Tick += indicator_tick;
+            indicator_timer.Start();
             
             start = 0;
 
@@ -436,7 +516,16 @@ namespace welding
 
         }
 
+        private void indicator_tick(object sender, EventArgs e)
+        {
+            welding_cureent_screen.Text = current_welding_ind.ToString();
+            speed_of_filing.Text = wire_speed_ind.ToString();
+            current_though_wire.Text = current__wire_ind.ToString();
+            bias_voltage_crreen.Text = bias_voltage_ind.ToString();
+            screen_one_cikl.Text = distance_one_ind.ToString();
+            screen_all_time.Text = distance_all_ind.ToString();
 
+        }
 
         private void T_Tick(object sender, EventArgs e)
         {
@@ -933,5 +1022,7 @@ namespace welding
             screen_volt.Text = bias_voltage.ToString();
             Send_function();
         }
+
+        
     }
 }

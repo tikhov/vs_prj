@@ -514,7 +514,7 @@
                 <ImageBrush ImageSource="img/screen_big.png"/>
             </TextBox.Background>
         </TextBox>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="75" Margin="341,208,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="187"  FontSize="82" Text="888" Padding="9,-4,7,-4" BorderThickness="0" FontFamily="DS-Digital" TextAlignment="Right" SelectionBrush="#FF8095F1" BorderBrush="{x:Null}" Foreground="#FF343434">
+        <TextBox x:Name="bias_voltage_crreen" Grid.Column="1" HorizontalAlignment="Left" Height="75" Margin="341,208,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="187"  FontSize="82" Text="888" Padding="9,-4,7,-4" BorderThickness="0" FontFamily="DS-Digital" TextAlignment="Right" SelectionBrush="#FF8095F1" BorderBrush="{x:Null}" Foreground="#FF343434">
             <TextBox.Background>
                 <ImageBrush ImageSource="img/screen_big1.png"/>
             </TextBox.Background>
